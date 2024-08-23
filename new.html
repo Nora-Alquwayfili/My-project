@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>لوحة تحكم الوزارة</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .navbar {
+            background-color: #004080;
+            padding: 15px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar-brand-left img {
+            height: 50px; /* حجم شعار الشركة */
+        }
+        .navbar-brand-center img {
+            height: 70px; /* حجم شعار رؤية 2030 */
+        }
+        .navbar-brand-right img {
+            height: 150px; /* حجم شعار الوزارة */
+        }
+        h1 {
+            color: #004080;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            text-align: center;
+            font-weight: bold;
+        }
+        .custom-card {
+            background-color: white;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .custom-card h4 {
+            margin-bottom: 20px;
+            color: #004080;
+        }
+        .list-group-item.active {
+            background-color: #004080;
+            border-color: #004080;
+            color: white;
+            font-weight: bold;
+        }
+        .list-group-item {
+            cursor: pointer;
+            border: none;
+            padding: 15px 20px;
+            font-size: 1rem;
+            color: #004080;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .list-group-item:hover {
+            background-color: #f0f0f0;
+            color: #002244;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+        footer {
+            background-color: #004080;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            margin-top: auto;
+        }
+        .table-responsive {
+            margin-top: 20px;
+        }
+        .table th, .table td {
+            text-align: center;
+            vertical-align: middle;
+        }
+        .chart-container {
+            position: relative;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- الشعارات -->
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <a class="navbar-brand navbar-brand-left" href="#">
+                <img src="C:/Users/Nora/Downloads/Dev_logo_rgb.png" alt="شعار شركة ديفوتيم">
+            </a>
+            <a class="navbar-brand navbar-brand-center" href="#">
+                <img src="C:/Users/Nora/Downloads/صور-شعار-رؤية-المملكة-2030-شفاف-بدون-خلفية-.png" alt="شعار رؤية 2030">
+            </a>
+            <a class="navbar-brand navbar-brand-right" href="#">
+                <img src="C:/Users/Nora/Downloads/شعار-وزارة-الموارد-البشرية-02.png" alt="شعار وزارة الموارد البشرية">
+            </a>
+        </nav>
+
+        <h1>لوحة تحكم وزارة الموارد البشرية والتنمية الاجتماعية</h1>
+        <div class="row">
+            <div class="col-md-3">
+                <ul class="list-group">
+                    <li class="list-group-item active" onclick="showSection('dashboard')">لوحة التحكم</li>
+                    <li class="list-group-item" onclick="showSection('wage-management')">إدارة الأجور</li>
+                    <li class="list-group-item" onclick="showSection('compliance-monitoring')">مراقبة الامتثال</li>
+                    <li class="list-group-item" onclick="showSection('reports-notifications')">التقارير والإشعارات</li>
+                </ul>
+            </div>
+            <div class="col-md-9">
+                <!-- Dashboard Section -->
+                <div id="dashboard" class="custom-card">
+                    <h4>إحصائيات الامتثال</h4>
+                    <div class="chart-container">
+                        <canvas id="complianceTrendChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="complianceBySectorChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="complianceBySizeChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="complianceByRegionChart"></canvas>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>الشهر</th>
+                                    <th>عدد الشركات المتابعة</th>
+                                    <th>عدد الشركات الملتزمة</th>
+                                    <th>نسبة الامتثال</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>يناير</td>
+                                    <td>100</td>
+                                    <td>70</td>
+                                    <td>70%</td>
+                                </tr>
+                                <tr>
+                                    <td>فبراير</td>
+                                    <td>120</td>
+                                    <td>65</td>
+                                    <td>54%</td>
+                                </tr>
+                                <tr>
+                                    <td>مارس</td>
+                                    <td>150</td>
+                                    <td>50</td>
+                                    <td>33%</td>
+                                </tr>
+                                <tr>
+                                    <td>أبريل</td>
+                                    <td>180</td>
+                                    <td>80</td>
+                                    <td>44%</td>
+                                </tr>
+                                <tr>
+                                    <td>مايو</td>
+                                    <td>200</td>
+                                    <td>60</td>
+                                    <td>30%</td>
+                                </tr>
+                                <tr>
+                                    <td>يونيو</td>
+                                    <td>220</td>
+                                    <td>90</td>
+                                    <td>41%</td>
+                                </tr>
+                                <tr>
+                                    <td>يوليو</td>
+                                    <td>250</td>
+                                    <td>75</td>
+                                    <td>30%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- Wage Management Section -->
+                <div id="wage-management" class="custom-card" style="display:none;">
+                    <h4>إدارة الأجور</h4>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>الشركة</th>
+                                    <th>عدد الموظفين</th>
+                                    <th>متوسط الرواتب</th>
+                                    <th>حالة الامتثال</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>شركة تقنية</td>
+                                    <td>500</td>
+                                    <td>10,000 ريال</td>
+                                    <td>ملتزم</td>
+                                </tr>
+                                <tr>
+                                    <td>شركة مقاولات</td>
+                                    <td>300</td>
+                                    <td>8,500 ريال</td>
+                                    <td>غير ملتزم</td>
+                                </tr>
+                                <tr>
+                                    <td>شركة تجارية</td>
+                                    <td>200</td>
+                                    <td>7,000 ريال</td>
+                                    <td>ملتزم</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- Compliance Monitoring Section -->
+                <div id="compliance-monitoring" class="custom-card" style="display:none;">
+                    <h4>مراقبة الامتثال</h4>
+                    <p>مراقبة حالة الامتثال في الشركات المختلفة:</p>
+                    <ul>
+                        <li><a href="#" onclick="showCompanyDashboard('شركة تقنية')">شركة تقنية</a></li>
+                        <li><a href="#" onclick="showCompanyDashboard('شركة مقاولات')">شركة مقاولات</a></li>
+                        <li><a href="#" onclick="showCompanyDashboard('شركة تجارية')">شركة تجارية</a></li>
+                    </ul>
+                    <select id="timePeriod" onchange="updateComplianceData()">
+                        <option value="lastMonth">الشهر الماضي</option>
+                        <option value="lastQuarter">الربع الماضي</option>
+                        <option value="lastYear">السنة الماضية</option>
+                    </select>
+                    <canvas id="complianceChart"></canvas>
+                </div>
+                <!-- Company Dashboard Section -->
+                <div id="company-dashboard" class="custom-card" style="display:none;">
+                    <h4>لوحة تحكم الشركة</h4>
+                    <canvas id="companyChart"></canvas>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>الفترة</th>
+                                    <th>عدد الموظفين</th>
+                                    <th>متوسط الرواتب</th>
+                                    <th>حالة الامتثال</th>
+                                </tr>
+                            </thead>
+                            <tbody id="companyData">
+                                <!-- بيانات الشركة ستتم إضافتها هنا عبر JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- Reports and Notifications Section -->
+                <div id="reports-notifications" class="custom-card" style="display:none;">
+                    <h4>التقارير والإشعارات</h4>
+                    <p>التقارير الأخيرة والإشعارات المهمة سيتم عرضها هنا.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>جميع الحقوق محفوظة &copy; 2024 وزارة الموارد البشرية والتنمية الاجتماعية</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.custom-card').forEach(card => {
+                card.style.display = 'none';
+            });
+            document.getElementById(sectionId).style.display = 'block';
+        }
+
+        function showCompanyDashboard(companyName) {
+            document.getElementById('compliance-monitoring').style.display = 'none';
+            document.getElementById('company-dashboard').style.display = 'block';
+            // Load company-specific data here
+            document.getElementById('companyData').innerHTML = `
+                <tr>
+                    <td>يناير - مارس</td>
+                    <td>150</td>
+                    <td>9,000 ريال</td>
+                    <td>ملتزم</td>
+                </tr>
+                <tr>
+                    <td>أبريل - يونيو</td>
+                    <td>170</td>
+                    <td>8,800 ريال</td>
+                    <td>ملتزم</td>
+                </tr>
+                <tr>
+                    <td>يوليو - سبتمبر</td>
+                    <td>160</td>
+                    <td>9,200 ريال</td>
+                    <td>غير ملتزم</td>
+                </tr>
+                <tr>
+                    <td>أكتوبر - ديسمبر</td>
+                    <td>180</td>
+                    <td>8,500 ريال</td>
+                    <td>ملتزم</td>
+                </tr>
+            `;
+        }
+
+        function updateComplianceData() {
+            const period = document.getElementById('timePeriod').value;
+            // Update chart data based on the selected period
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var ctx1 = document.getElementById('complianceTrendChart').getContext('2d');
+            var complianceTrendChart = new Chart(ctx1, {
+                type: 'line',
+                data: {
+                    labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو'],
+                    datasets: [{
+                        label: 'اتجاه الامتثال',
+                        data: [70, 54, 33, 44, 30, 41, 30],
+                        backgroundColor: 'rgba(0, 128, 0, 0.2)',
+                        borderColor: 'rgba(0, 128, 0, 1)',
+                        borderWidth: 2,
+                        fill: true
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            suggestedMax: 100
+                        }
+                    }
+                }
+            });
+
+            var ctx2 = document.getElementById('complianceBySectorChart').getContext('2d');
+            var complianceBySectorChart = new Chart(ctx2, {
+                type: 'doughnut',
+                data: {
+                    labels: ['قطاع التقنية', 'قطاع التعليم', 'قطاع الصحة', 'قطاع التجارة'],
+                    datasets: [{
+                        label: 'الامتثال حسب القطاع',
+                        data: [65, 70, 80, 50],
+                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
+                        borderColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true
+                }
+            });
+
+            var ctx3 = document.getElementById('complianceBySizeChart').getContext('2d');
+            var complianceBySizeChart = new Chart(ctx3, {
+                type: 'bar',
+                data: {
+                    labels: ['شركات صغيرة', 'شركات متوسطة', 'شركات كبيرة'],
+                    datasets: [{
+                        label: 'الامتثال حسب حجم الشركة',
+                        data: [60, 70, 85],
+                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+                        borderColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return tooltipItem.label + ': ' + tooltipItem.raw + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            var ctx4 = document.getElementById('complianceByRegionChart').getContext('2d');
+            var complianceByRegionChart = new Chart(ctx4, {
+                type: 'bar',
+                data: {
+                    labels: ['المنطقة الشمالية', 'المنطقة الجنوبية', 'المنطقة الشرقية', 'المنطقة الغربية'],
+                    datasets: [{
+                        label: 'الامتثال حسب الموقع الجغرافي',
+                        data: [75, 65, 80, 70],
+                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
+                        borderColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return tooltipItem.label + ': ' + tooltipItem.raw + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            var ctx5 = document.getElementById('companyChart').getContext('2d');
+            var companyChart = new Chart(ctx5, {
+                type: 'bar',
+                data: {
+                    labels: ['يناير - مارس', 'أبريل - يونيو', 'يوليو - سبتمبر', 'أكتوبر - ديسمبر'],
+                    datasets: [{
+                        label: 'عدد الموظفين',
+                        data: [150, 170, 160, 180],
+                        backgroundColor: 'rgba(0, 123, 255, 0.5)',
+                        borderColor: 'rgba(0, 123, 255, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return tooltipItem.label + ': ' + tooltipItem.raw + ' موظف';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
